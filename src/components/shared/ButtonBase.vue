@@ -1,6 +1,13 @@
 <template>
   <button
-    class="bg-green-100 border border-green-500 px-4 py-2 rounded text-green-500 text-sm"
+    :class="[
+      'border px-4 py-2 rounded text-sm',
+      {
+        'bg-green-100 text-green-500 border-green-500': isActive,
+        'bg-gray-100 text-gray-500 border-gray-300': !isActive,
+      },
+    ]"
+    @click="isSelected"
   >
     {{ text }}
   </button>
@@ -14,6 +21,17 @@ export default {
     text: {
       type: String,
       default: "",
+    },
+
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  methods: {
+    isSelected() {
+      this.$emit("select", this.text);
     },
   },
 };

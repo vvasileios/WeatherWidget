@@ -1,51 +1,70 @@
 <template>
   <div class="">
     <div class="mb-5 flex gap-2">
-      <button-base :text="'Now'"></button-base>
-      <button-base :text="'Today'"></button-base>
-      <button-base :text="'Select Date'"></button-base>
+      <ButtonBase
+        :is-Active="currentSelection === 'Now'"
+        :text="'Now'"
+        @select="handleSelection('Now')"
+      />
+      <ButtonBase
+        :is-Active="currentSelection === 'Today'"
+        :text="'Today'"
+        @select="handleSelection('Today')"
+      />
+      <!-- <button-base
+        @select="handleSelection('Select Date')"
+        :text="'Select Date'"
+      ></button-base> -->
     </div>
     <div class="mt-10 flex justify-between border-b pb-10">
-      <div>
-        <p class="text-5xl font-semibold">
-          16 <span class="font-normal">&#176;C</span>
+      <div class="flex flex-col gap-2">
+        <p class="text-5xl font-xs">
+          {{ roundTemperature(currentWeather.temperature) }}
+          <span class="font-light text-4xl">&#176;C</span>
         </p>
-        <p class="pt-3 text-sm text-gray-500">sgssdgsdgsdg</p>
+        <p class="text-sm text-gray-500">{{ currentWeather.description }}</p>
       </div>
       <div>
         <img src="" alt="" />
       </div>
     </div>
+
     <div class="grid grid-cols-3 gap-4 mt-5">
       <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">18 &#176;C</p>
+        <p class="text-xl font-semibold">
+          {{ roundTemperature(currentWeather.feels_like) }} &#176;C
+        </p>
         <p class="text-xs text-gray-500">Feels Like</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          3.1 <span class="text-sm font-semibold">m/s</span>
+          {{ currentWeather.wind }}
+          <span class="text-sm font-semibold">m/s</span>
         </p>
         <p class="text-xs text-gray-500">Wind</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          0 <span class="text-sm font-semibold">m/s</span>
+          {{ currentWeather.wind_gust }}
+          <span class="text-sm font-semibold">m/s</span>
         </p>
         <p class="text-xs text-gray-500">Wind Gust</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">45&#176;</p>
+        <p class="text-xl font-semibold">{{ currentWeather.wind_deg }}&#176;</p>
         <p class="text-xs text-gray-500">Wind Deg</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          85<span class="text-sm font-semibold">%</span>
+          {{ currentWeather.humidity
+          }}<span class="text-sm font-semibold">%</span>
         </p>
         <p class="text-xs text-gray-500">Humidity</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          0.2<span class="text-sm font-semibold">hPa</span>
+          {{ addDecimal(currentWeather.pressure)
+          }}<span class="text-sm font-semibold">hPa</span>
         </p>
         <p class="text-xs text-gray-500">Pressure</p>
       </div>
@@ -54,12 +73,37 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import ButtonBase from "./ButtonBase.vue";
 export default {
   name: "DataPanel",
 
   components: {
     ButtonBase,
+  },
+
+  computed: {
+    ...mapGetters({
+      currentWeather: "getCurrentWeather",
+      currentSelection: "getCurrentSelection",
+    }),
+  },
+
+  methods: {
+    handleSelection(selection) {
+      this.$store.dispatch("setCurrentSelection", selection);
+    },
+
+    roundTemperature(temp) {
+      return Math.round(temp * 2) / 2;
+    },
+
+    addDecimal(number) {
+      const numStr = number.toString();
+      const result = numStr.slice(0, 1) + "." + numStr.slice(1);
+
+      return parseFloat(result);
+    },
   },
 };
 </script>
