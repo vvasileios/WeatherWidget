@@ -14,5 +14,9 @@ export default {
   components: {
     WeatherWidget,
   },
+
+  created() {
+    this.$store.dispatch("fetchWeatherDetails");
+  },
 };
 </script>

@@ -1,5 +1,7 @@
 <template>
-  <content-box> </content-box>
+  <content-box>
+    <DataPanel />
+  </content-box>
   <content-box>
     <LineChart />
   </content-box>
@@ -7,6 +9,7 @@
 
 <script>
 import ContentBox from "./shared/ContentBox.vue";
+import DataPanel from "./shared/DataPanel.vue";
 import LineChart from "./shared/LineChart.vue";
 
 export default {
@@ -15,6 +18,7 @@ export default {
   components: {
     ContentBox,
     LineChart,
+    DataPanel,
   },
 };
 </script>
