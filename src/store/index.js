@@ -27,6 +27,7 @@ export default createStore({
       },
       weatherWeek: [],
       currentSelection: "Now",
+      selectedDate: null,
     };
   },
 
@@ -44,6 +45,8 @@ export default createStore({
     },
 
     getCurrentSelection: (state) => state.currentSelection,
+
+    getSelectedDate: (state) => state.selectedDate,
   },
 
   mutations: {
@@ -88,6 +91,10 @@ export default createStore({
 
     SET_CURRENT_SELECTION(state, payload) {
       state.currentSelection = payload;
+    },
+
+    SET_SELECTED_DATE(state, payload) {
+      state.selectedDate = payload;
     },
   },
 

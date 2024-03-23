@@ -11,10 +11,7 @@
         :text="'Today'"
         @select="handleSelection('Today')"
       />
-      <!-- <button-base
-        @select="handleSelection('Select Date')"
-        :text="'Select Date'"
-      ></button-base> -->
+      <DatePicker />
     </div>
     <div class="mt-10 flex justify-between border-b pb-10">
       <div class="flex flex-col gap-2">
@@ -75,11 +72,13 @@
 <script>
 import { mapGetters } from "vuex";
 import ButtonBase from "./ButtonBase.vue";
+import DatePicker from "./DatePicker.vue";
 export default {
   name: "DataPanel",
 
   components: {
     ButtonBase,
+    DatePicker,
   },
 
   computed: {
