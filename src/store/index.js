@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import moment from "moment";
 import axios from "axios";
 
 export default createStore({
@@ -24,7 +25,7 @@ export default createStore({
         humidity: "",
         pressure: "",
       },
-      weatherWeek: {},
+      weatherWeek: [],
       currentSelection: "Now",
     };
   },
@@ -38,7 +39,10 @@ export default createStore({
       }
     },
 
-    getDailyWeather: (state) => state.dailyWeather,
+    getWeeklyWeather: (state) => {
+      console.log(state.weatherWeek);
+      return state.weatherWeek;
+    },
 
     getCurrentSelection: (state) => state.currentSelection,
   },
@@ -56,26 +60,29 @@ export default createStore({
     },
 
     SET_WEATHER_DAILY(state, payload) {
-      const dayTemp = payload[0]?.temp?.day ?? 0;
-      const nightTemp = payload[0]?.temp?.night ?? 0;
+      const dayTemp = payload?.temp?.day;
+      const nightTemp = payload?.temp?.night;
 
       state.weatherToday.temperature = (dayTemp + nightTemp) / 2;
 
-      state.weatherToday.description = payload[0]?.weather[0]?.description;
+      state.weatherToday.description = payload?.weather[0]?.description;
 
-      const dayFeel = payload[0]?.feels_like?.day ?? 0;
-      const nightFeel = payload[0]?.feels_like?.night ?? 0;
+      const dayFeel = payload?.feels_like?.day;
+      const nightFeel = payload?.feels_like?.night;
 
       state.weatherToday.feels_like = (dayFeel + nightFeel) / 2;
-      state.weatherToday.wind = payload[0]?.wind_speed;
-      state.weatherToday.wind_gust = payload[0]?.wind_gust || 0;
-      state.weatherToday.wind_deg = payload[0]?.wind_deg;
-      state.weatherToday.humidity = payload[0]?.humidity;
-      state.weatherToday.pressure = payload[0]?.pressure;
+      state.weatherToday.wind = payload?.wind_speed;
+      state.weatherToday.wind_gust = payload?.wind_gust || 0;
+      state.weatherToday.wind_deg = payload?.wind_deg;
+      state.weatherToday.humidity = payload?.humidity;
+      state.weatherToday.pressure = payload?.pressure;
+    },
 
-      delete payload[0];
-
-      state.weatherWeek = payload;
+    SET_WEATHER_WEEK(state, payload) {
+      state.weatherWeek = payload.map((date) => {
+        moment.unix(date.dt).format("DD/MM");
+      });
+      console.log(payload);
     },
 
     SET_CURRENT_SELECTION(state, payload) {
@@ -92,7 +99,8 @@ export default createStore({
           )
           .then((res) => {
             commit("SET_WEATHER_CURRENT", res.data.current);
-            commit("SET_WEATHER_DAILY", res.data.daily);
+            commit("SET_WEATHER_DAILY", res.data.daily[0]);
+            commit("SET_WEATHER_WEEK", res.data.daily);
             resolve(res);
           })
           .catch((e) => {

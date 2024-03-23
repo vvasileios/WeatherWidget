@@ -38,14 +38,14 @@
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          {{ currentWeather.wind }}
+          {{ addDecimal(currentWeather.wind) }}
           <span class="text-sm font-semibold">m/s</span>
         </p>
         <p class="text-xs text-gray-500">Wind</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          {{ currentWeather.wind_gust }}
+          {{ addDecimal(currentWeather.wind_gust) }}
           <span class="text-sm font-semibold">m/s</span>
         </p>
         <p class="text-xs text-gray-500">Wind Gust</p>
@@ -56,15 +56,15 @@
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          {{ currentWeather.humidity
-          }}<span class="text-sm font-semibold">%</span>
+          {{ currentWeather.humidity }}
+          <span class="text-sm font-semibold">%</span>
         </p>
         <p class="text-xs text-gray-500">Humidity</p>
       </div>
       <div class="border rounded-xl py-5 px-3">
         <p class="text-xl font-semibold">
-          {{ addDecimal(currentWeather.pressure)
-          }}<span class="text-sm font-semibold">hPa</span>
+          {{ addDecimal(currentWeather.pressure) }}
+          <span class="text-sm font-semibold">hPa</span>
         </p>
         <p class="text-xs text-gray-500">Pressure</p>
       </div>
@@ -99,10 +99,21 @@ export default {
     },
 
     addDecimal(number) {
-      const numStr = number.toString();
-      const result = numStr.slice(0, 1) + "." + numStr.slice(1);
+      let numStr = number.toString();
+      const hasDecimal = numStr.includes(".");
 
-      return parseFloat(result);
+      if (hasDecimal) {
+        const decimalIndex = numStr.indexOf(".");
+        if (decimalIndex === 1) {
+          numStr = numStr.slice(0, 3);
+        } else {
+          numStr = numStr.slice(0, 1) + "." + numStr.slice(1, 2);
+        }
+      } else {
+        numStr = numStr.slice(0, 1) + "." + numStr.slice(1, 2);
+      }
+
+      return parseFloat(numStr);
     },
   },
 };

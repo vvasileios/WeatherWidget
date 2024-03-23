@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
@@ -17,11 +18,22 @@ export default {
   data() {
     return {
       chartOptions: {
-        chart: {
-          id: "vuechart",
+        chart: { id: "weather-chart" },
+        yaxis: {
+          title: {
+            text: "Temperature",
+          },
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+          categories: this.xAxisFormat(),
+        },
+        title: {
+          text: "Weekly Variation",
+          align: "left",
+          margin: 10,
+          style: {
+            fontSize: "15px",
+          },
         },
       },
       series: [
@@ -31,6 +43,21 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      weeklyWeather: "getWeeklyWeather",
+    }),
+  },
+
+  methods: {
+    xAxisFormat() {
+      console.log(this.weeklyWeather);
+      // return this.weeklyWeather.map((date) => {
+      //   return date.dt;
+      // });
+    },
   },
 };
 </script>
