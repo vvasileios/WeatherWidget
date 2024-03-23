@@ -40,7 +40,6 @@ export default createStore({
     },
 
     getWeeklyWeather: (state) => {
-      console.log(state.weatherWeek);
       return state.weatherWeek;
     },
 
@@ -80,9 +79,11 @@ export default createStore({
 
     SET_WEATHER_WEEK(state, payload) {
       state.weatherWeek = payload.map((date) => {
-        moment.unix(date.dt).format("DD/MM");
+        return {
+          ...date,
+          dt: moment.unix(date.dt).format("DD/MM"),
+        };
       });
-      console.log(payload);
     },
 
     SET_CURRENT_SELECTION(state, payload) {

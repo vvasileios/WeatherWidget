@@ -15,18 +15,20 @@ export default {
     apexchart: VueApexCharts,
   },
 
-  data() {
-    return {
-      chartOptions: {
+  computed: {
+    ...mapGetters({
+      weeklyWeather: "getWeeklyWeather",
+    }),
+
+    chartOptions() {
+      return {
         chart: { id: "weather-chart" },
         yaxis: {
           title: {
             text: "Temperature",
           },
         },
-        xaxis: {
-          categories: this.xAxisFormat(),
-        },
+        xaxis: this.xAxisFormat(),
         title: {
           text: "Weekly Variation",
           align: "left",
@@ -35,28 +37,43 @@ export default {
             fontSize: "15px",
           },
         },
-      },
-      series: [
-        {
-          name: "series-1",
-          data: [30, 40, 35, 50, 49, 60, 70, 91],
-        },
-      ],
-    };
-  },
+      };
+    },
 
-  computed: {
-    ...mapGetters({
-      weeklyWeather: "getWeeklyWeather",
-    }),
+    series() {
+      return [{ name: "Temperature", data: this.getTemperatures() }];
+    },
   },
 
   methods: {
     xAxisFormat() {
-      console.log(this.weeklyWeather);
-      // return this.weeklyWeather.map((date) => {
-      //   return date.dt;
-      // });
+      const dates = this.weeklyWeather.map((date) => {
+        return date.dt;
+      });
+
+      const datesWithoutLast = dates.slice(0, -1);
+
+      return {
+        categories: datesWithoutLast,
+      };
+    },
+
+    getTemperatures() {
+      const temperatures = this.weeklyWeather.map((dateTemp) => {
+        return (dateTemp.temp.day + dateTemp.temp.night) / 2;
+      });
+
+      const temperaturesWithoutLast = temperatures.slice(0, -1);
+
+      const roundedTemps = temperaturesWithoutLast.map((temp) => {
+        return this.roundTemperature(temp);
+      });
+
+      return roundedTemps;
+    },
+
+    roundTemperature(temp) {
+      return Math.round(temp * 2) / 2;
     },
   },
 };
