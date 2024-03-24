@@ -42,7 +42,12 @@
       >
         <p class="text-xl font-semibold">
           {{ item.value }}
-          <span class="text-sm font-semibold">{{ item.unit }}</span>
+          <span
+            :class="changeUnitStyle(item.description)"
+            class="font-semibold"
+          >
+            {{ item.unit }}
+          </span>
         </p>
         <p class="text-xs text-gray-500">{{ item.description }}</p>
       </div>
@@ -75,6 +80,14 @@ export default {
   methods: {
     handleSelection(selection) {
       this.$store.dispatch("setCurrentSelection", selection);
+    },
+
+    changeUnitStyle(item) {
+      if (item === "Feels Like" || item === "Wind Deg") {
+        return "text-xl";
+      } else {
+        return "text-sm";
+      }
     },
   },
 };
