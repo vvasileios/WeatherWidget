@@ -19,6 +19,19 @@ export default createStore({
 
   getters: {
     getWeatherData: (state) => {
+      if (state.selectedDate) {
+        const selectedDateData = state.weatherWeek.filter((day) => {
+          return (
+            moment(day[0].dt).format("DD/MM") ===
+            moment(state.selectedDate).format("DD/MM")
+          );
+        });
+
+        const weatherData = selectedDateData[0].slice(1);
+
+        return weatherData;
+      }
+
       if (state.currentSelection === "Now") {
         return state.weatherData;
       } else if (state.currentSelection === "Today") {
