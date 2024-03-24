@@ -21,8 +21,8 @@
         </p>
         <p class="text-sm text-gray-500">{{ currentWeather.description }}</p>
       </div>
-      <div>
-        <img src="" alt="" />
+      <div class="">
+        <img src="https://openweathermap.org/img/w/03d.png" alt="" />
       </div>
     </div>
 

@@ -17,7 +17,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      weeklyWeather: "getWeeklyWeather",
+      chartTemperature: "getTemperaturesForChart",
+      chartDates: "getDatesForChart",
     }),
 
     chartOptions() {
@@ -28,7 +29,9 @@ export default {
             text: "Temperature",
           },
         },
-        xaxis: this.xAxisFormat(),
+        xaxis: {
+          categories: this.chartDates,
+        },
         title: {
           text: "Weekly Variation",
           align: "left",
@@ -41,39 +44,7 @@ export default {
     },
 
     series() {
-      return [{ name: "Temperature", data: this.getTemperatures() }];
-    },
-  },
-
-  methods: {
-    xAxisFormat() {
-      const dates = this.weeklyWeather.map((date) => {
-        return date.dt;
-      });
-
-      const datesWithoutLast = dates.slice(0, -1);
-
-      return {
-        categories: datesWithoutLast,
-      };
-    },
-
-    getTemperatures() {
-      const temperatures = this.weeklyWeather.map((dateTemp) => {
-        return (dateTemp.temp.day + dateTemp.temp.night) / 2;
-      });
-
-      const temperaturesWithoutLast = temperatures.slice(0, -1);
-
-      const roundedTemps = temperaturesWithoutLast.map((temp) => {
-        return this.roundTemperature(temp);
-      });
-
-      return roundedTemps;
-    },
-
-    roundTemperature(temp) {
-      return Math.round(temp * 2) / 2;
+      return [{ name: "Temperature", data: this.chartTemperature }];
     },
   },
 };

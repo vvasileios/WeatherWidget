@@ -46,7 +46,40 @@ export default createStore({
 
     getCurrentSelection: (state) => state.currentSelection,
 
+    getDatesForChart: (state) => {
+      const dates = state.weatherWeek.map((date) => {
+        return moment(date.dt).format("DD/MM");
+      });
+
+      const fullWeek = dates.slice(0, -1);
+
+      return fullWeek;
+    },
+
+    getTemperaturesForChart: (state) => {
+      const temperatures = state.weatherWeek.map((dateTemp) => {
+        return (dateTemp.temp.day + dateTemp.temp.night) / 2;
+      });
+
+      const fullWeekTemp = temperatures.slice(0, -1);
+
+      const roundTemps = fullWeekTemp.map((temp) => {
+        return Math.round(temp * 2) / 2;
+      });
+
+      return roundTemps;
+    },
+
     getSelectedDate: (state) => state.selectedDate,
+
+    getDatesForPicker: (state) => {
+      return [
+        moment(state.weatherWeek[0]?.dt).format("MM/DD/YY"),
+        moment(state.weatherWeek[state.weatherWeek.length - 2]?.dt).format(
+          "MM/DD/YY"
+        ),
+      ];
+    },
   },
 
   mutations: {
@@ -84,7 +117,7 @@ export default createStore({
       state.weatherWeek = payload.map((date) => {
         return {
           ...date,
-          dt: moment.unix(date.dt).format("DD/MM"),
+          dt: moment.unix(date.dt).toISOString(),
         };
       });
     },
