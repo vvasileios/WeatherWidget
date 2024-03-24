@@ -1,8 +1,8 @@
 <template>
-  <content-box>
+  <content-box class="rounded-t-lg">
     <DataPanel />
   </content-box>
-  <content-box>
+  <content-box class="rounded-b-lg">
     <LineChart />
   </content-box>
 </template>

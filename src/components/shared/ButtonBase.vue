@@ -3,8 +3,10 @@
     :class="[
       'border px-4 py-2 rounded text-sm',
       {
-        'bg-green-100 text-green-500 border-green-500': isActive,
-        'bg-gray-100 text-gray-500 border-gray-300': !isActive,
+        'bg-green-100 text-green-500 border-green-500':
+          isActive && !isDateSelected,
+        'bg-gray-100 text-gray-700 border-gray-300':
+          !isActive || isDateSelected,
       },
     ]"
     @click="isSelected"
@@ -24,6 +26,11 @@ export default {
     },
 
     isActive: {
+      type: Boolean,
+      default: false,
+    },
+
+    isDateSelected: {
       type: Boolean,
       default: false,
     },

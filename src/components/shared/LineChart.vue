@@ -27,6 +27,9 @@ export default {
         yaxis: {
           title: {
             text: "Temperature",
+            style: {
+              fontSize: "13px",
+            },
           },
         },
         xaxis: {

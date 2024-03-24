@@ -1,11 +1,14 @@
 import moment from "moment";
 
 function roundNumber(num) {
-  return Math.round(num * 2) / 2;
-}
+  const floorValue = Math.floor(num);
+  const decimalPart = num - floorValue;
 
-function formatDate(unixTimestamp) {
-  return moment.unix(unixTimestamp).toISOString();
+  if (decimalPart <= 0.5) {
+    return floorValue;
+  } else {
+    return floorValue + 1;
+  }
 }
 
 function addDecimal(number) {

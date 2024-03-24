@@ -4,22 +4,24 @@
   <div v-else>
     <div class="mb-5 flex gap-2">
       <ButtonBase
-        :is-Active="currentSelection === 'Now'"
+        :is-Active="currentSelection === 'Now' && !selectedDate"
+        :is-date-selected="!!selectedDate"
         :text="'Now'"
         @select="handleSelection('Now')"
       />
       <ButtonBase
-        :is-Active="currentSelection === 'Today'"
+        :is-Active="currentSelection === 'Today' && !selectedDate"
+        :is-date-selected="!!selectedDate"
         :text="'Today'"
         @select="handleSelection('Today')"
       />
       <DatePicker />
     </div>
-    <div class="flex justify-between items-center border-b pb-6 mt-6">
+    <div class="flex justify-between items-center border-b-4 pb-6 mt-6">
       <div class="flex flex-col gap-2">
-        <p class="text-5xl font-bold">
+        <p class="text-5xl font-normal">
           {{ weatherData[0].value }}
-          <span class="font-light text-5xl">{{ weatherData[0].unit }}</span>
+          <span class="font-normal text-5xl">{{ weatherData[0].unit }}</span>
         </p>
         <p class="text-sm text-gray-500">{{ weatherData[0].description }}</p>
       </div>
@@ -65,6 +67,7 @@ export default {
     ...mapGetters({
       weatherData: "getWeatherData",
       currentSelection: "getCurrentSelection",
+      selectedDate: "getSelectedDate",
       loading: "getLoading",
     }),
   },
