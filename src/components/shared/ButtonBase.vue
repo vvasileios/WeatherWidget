@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'border px-4 py-2 rounded text-sm',
+      'border px-3 sm:px-4 py-2 rounded text-xs sm:text-sm',
       {
         'bg-green-100 text-green-500 border-green-500':
           isActive && !isDateSelected,

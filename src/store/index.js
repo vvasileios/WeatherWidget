@@ -36,6 +36,7 @@ export default createStore({
         return state.weatherData;
       } else if (state.currentSelection === "Today") {
         const removeDate = state.weatherWeek[0].slice(1);
+
         return removeDate;
       }
     },
@@ -93,6 +94,7 @@ export default createStore({
     },
 
     SET_CURRENT_SELECTION(state, payload) {
+      state.selectedDate = null;
       state.currentSelection = payload;
     },
 

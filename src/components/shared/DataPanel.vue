@@ -2,7 +2,7 @@
   <!-- Display loading message or spinner when data is being fetched -->
   <div v-if="loading">Loading weather data...</div>
   <div v-else>
-    <div class="mb-5 flex gap-2">
+    <div class="mb-5 flex gap-1 sm:gap-2">
       <ButtonBase
         :is-Active="currentSelection === 'Now' && !selectedDate"
         :is-date-selected="!!selectedDate"
@@ -19,11 +19,15 @@
     </div>
     <div class="flex justify-between items-center border-b-4 pb-6 mt-6">
       <div class="flex flex-col gap-2">
-        <p class="text-5xl font-normal">
+        <p class="text-3xl sm:text-5xl font-normal">
           {{ weatherData[0].value }}
-          <span class="font-normal text-5xl">{{ weatherData[0].unit }}</span>
+          <span class="text-3xl sm:text-5xl font-normal">{{
+            weatherData[0].unit
+          }}</span>
         </p>
-        <p class="text-sm text-gray-500">{{ weatherData[0].description }}</p>
+        <p class="text-xs sm:text-sm text-gray-500">
+          {{ weatherData[0].description }}
+        </p>
       </div>
       <div class="w-24 h-24">
         <img
@@ -34,13 +38,13 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-4 mt-5">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
       <div
         class="border rounded-xl py-5 px-3"
         v-for="(item, index) in weatherData.slice(1)"
         :key="index"
       >
-        <p class="text-xl font-semibold">
+        <p class="text-sm sm:text-xl font-semibold">
           {{ item.value }}
           <span
             :class="changeUnitStyle(item.description)"
@@ -84,7 +88,7 @@ export default {
 
     changeUnitStyle(item) {
       if (item === "Feels Like" || item === "Wind Deg") {
-        return "text-xl";
+        return "text-sm sm:text-xl";
       } else {
         return "text-sm";
       }

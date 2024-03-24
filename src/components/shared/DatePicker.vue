@@ -1,6 +1,6 @@
 <template>
   <vue-date-picker
-    class="w-40"
+    class="md:w-40"
     v-model="selectedDate"
     :enable-time-picker="false"
     :min-date="minDate"

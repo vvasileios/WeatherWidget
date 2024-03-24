@@ -24,11 +24,32 @@ export default {
     chartOptions() {
       return {
         chart: { id: "weather-chart" },
+        responsive: [
+          {
+            breakpoint: 1000,
+            options: {
+              chart: {
+                type: "bar",
+              },
+              plotOptions: {
+                bar: {
+                  horizontal: true,
+                },
+              },
+              yaxis: {},
+            },
+          },
+        ],
         yaxis: {
           title: {
             text: "Temperature",
             style: {
               fontSize: "13px",
+            },
+          },
+          labels: {
+            formatter: (value) => {
+              return `${value}°C`;
             },
           },
         },
@@ -43,11 +64,16 @@ export default {
             fontSize: "15px",
           },
         },
+        markers: {
+          size: 7,
+        },
       };
     },
 
     series() {
-      return [{ name: "Temperature", data: this.chartTemperature }];
+      return [
+        { name: "Temperature", data: this.chartTemperature, color: "#22C55E" },
+      ];
     },
   },
 };
