@@ -1,5 +1,7 @@
 <template>
-  <div class="">
+  <!-- Display loading message or spinner when data is being fetched -->
+  <div v-if="loading">Loading weather data...</div>
+  <div v-else>
     <div class="mb-5 flex gap-2">
       <ButtonBase
         :is-Active="currentSelection === 'Now'"
@@ -16,10 +18,10 @@
     <div class="mt-10 flex justify-between border-b pb-10">
       <div class="flex flex-col gap-2">
         <p class="text-5xl font-xs">
-          {{ roundTemperature(currentWeather.temperature) }}
-          <span class="font-light text-4xl">&#176;C</span>
+          {{ weatherData[0].value }}
+          <span class="font-light text-4xl">{{ weatherData[0].unit }}</span>
         </p>
-        <p class="text-sm text-gray-500">{{ currentWeather.description }}</p>
+        <p class="text-sm text-gray-500">{{ weatherData[0].description }}</p>
       </div>
       <div class="">
         <img src="https://openweathermap.org/img/w/03d.png" alt="" />
@@ -27,43 +29,16 @@
     </div>
 
     <div class="grid grid-cols-3 gap-4 mt-5">
-      <div class="border rounded-xl py-5 px-3">
+      <div
+        class="border rounded-xl py-5 px-3"
+        v-for="(item, index) in weatherData.slice(1)"
+        :key="index"
+      >
         <p class="text-xl font-semibold">
-          {{ roundTemperature(currentWeather.feels_like) }} &#176;C
+          {{ item.value }}
+          <span class="text-sm font-semibold">{{ item.unit }}</span>
         </p>
-        <p class="text-xs text-gray-500">Feels Like</p>
-      </div>
-      <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">
-          {{ addDecimal(currentWeather.wind) }}
-          <span class="text-sm font-semibold">m/s</span>
-        </p>
-        <p class="text-xs text-gray-500">Wind</p>
-      </div>
-      <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">
-          {{ addDecimal(currentWeather.wind_gust) }}
-          <span class="text-sm font-semibold">m/s</span>
-        </p>
-        <p class="text-xs text-gray-500">Wind Gust</p>
-      </div>
-      <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">{{ currentWeather.wind_deg }}&#176;</p>
-        <p class="text-xs text-gray-500">Wind Deg</p>
-      </div>
-      <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">
-          {{ currentWeather.humidity }}
-          <span class="text-sm font-semibold">%</span>
-        </p>
-        <p class="text-xs text-gray-500">Humidity</p>
-      </div>
-      <div class="border rounded-xl py-5 px-3">
-        <p class="text-xl font-semibold">
-          {{ addDecimal(currentWeather.pressure) }}
-          <span class="text-sm font-semibold">hPa</span>
-        </p>
-        <p class="text-xs text-gray-500">Pressure</p>
+        <p class="text-xs text-gray-500">{{ item.description }}</p>
       </div>
     </div>
   </div>
@@ -73,6 +48,7 @@
 import { mapGetters } from "vuex";
 import ButtonBase from "./ButtonBase.vue";
 import DatePicker from "./DatePicker.vue";
+
 export default {
   name: "DataPanel",
 
@@ -83,36 +59,15 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentWeather: "getCurrentWeather",
+      weatherData: "getWeatherData",
       currentSelection: "getCurrentSelection",
+      loading: "getLoading",
     }),
   },
 
   methods: {
     handleSelection(selection) {
       this.$store.dispatch("setCurrentSelection", selection);
-    },
-
-    roundTemperature(temp) {
-      return Math.round(temp * 2) / 2;
-    },
-
-    addDecimal(number) {
-      let numStr = number.toString();
-      const hasDecimal = numStr.includes(".");
-
-      if (hasDecimal) {
-        const decimalIndex = numStr.indexOf(".");
-        if (decimalIndex === 1) {
-          numStr = numStr.slice(0, 3);
-        } else {
-          numStr = numStr.slice(0, 1) + "." + numStr.slice(1, 2);
-        }
-      } else {
-        numStr = numStr.slice(0, 1) + "." + numStr.slice(1, 2);
-      }
-
-      return parseFloat(numStr);
     },
   },
 };

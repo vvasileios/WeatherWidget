@@ -8,6 +8,7 @@
 
 <script>
 import WeatherWidget from "./components/WeatherWidget.vue";
+
 export default {
   name: "App",
 

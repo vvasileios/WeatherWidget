@@ -1,42 +1,29 @@
 import { createStore } from "vuex";
 import moment from "moment";
+import {
+  transformCurrentWeather,
+  transformDailyWeather,
+} from "/src/utils/index";
 import axios from "axios";
 
 export default createStore({
   state() {
     return {
-      currentWeather: {
-        temperature: "",
-        description: "",
-        feels_like: "",
-        wind: "",
-        wind_gust: "",
-        wind_deg: "",
-        humidity: "",
-        pressure: "",
-      },
-      weatherToday: {
-        temperature: "",
-        description: "",
-        feels_like: "",
-        wind: "",
-        wind_gust: "",
-        wind_deg: "",
-        humidity: "",
-        pressure: "",
-      },
+      weatherData: [],
       weatherWeek: [],
       currentSelection: "Now",
       selectedDate: null,
+      loading: true,
     };
   },
 
   getters: {
-    getCurrentWeather: (state) => {
+    getWeatherData: (state) => {
       if (state.currentSelection === "Now") {
-        return state.currentWeather;
+        return state.weatherData;
       } else if (state.currentSelection === "Today") {
-        return state.weatherToday;
+        const removeDate = state.weatherWeek[0].slice(1);
+        return removeDate;
       }
     },
 
@@ -47,79 +34,49 @@ export default createStore({
     getCurrentSelection: (state) => state.currentSelection,
 
     getDatesForChart: (state) => {
-      const dates = state.weatherWeek.map((date) => {
-        return moment(date.dt).format("DD/MM");
+      return state.weatherWeek.map((day) => {
+        return moment(day[0].dt).format("DD/MM");
       });
-
-      const fullWeek = dates.slice(0, -1);
-
-      return fullWeek;
     },
 
     getTemperaturesForChart: (state) => {
-      const temperatures = state.weatherWeek.map((dateTemp) => {
-        return (dateTemp.temp.day + dateTemp.temp.night) / 2;
+      return state.weatherWeek.map((day) => {
+        return day[1].value;
       });
-
-      const fullWeekTemp = temperatures.slice(0, -1);
-
-      const roundTemps = fullWeekTemp.map((temp) => {
-        return Math.round(temp * 2) / 2;
-      });
-
-      return roundTemps;
     },
 
     getSelectedDate: (state) => state.selectedDate,
 
     getDatesForPicker: (state) => {
-      return [
-        moment(state.weatherWeek[0]?.dt).format("MM/DD/YY"),
-        moment(state.weatherWeek[state.weatherWeek.length - 2]?.dt).format(
-          "MM/DD/YY"
-        ),
-      ];
+      if (state.weatherWeek.length > 0) {
+        const firstDate = state.weatherWeek[0][0].dt;
+        const lastIndex = state.weatherWeek.length - 1;
+        const lastDate = state.weatherWeek[lastIndex][0].dt;
+
+        return [
+          moment(firstDate).format("MM/DD/YY"),
+          moment(lastDate).format("MM/DD/YY"),
+        ];
+      }
+      return [];
+    },
+
+    getLoading: (state) => {
+      return state.loading;
     },
   },
 
   mutations: {
-    SET_WEATHER_CURRENT(state, payload) {
-      state.currentWeather.temperature = payload.temp;
-      state.currentWeather.description = payload.weather[0].description;
-      state.currentWeather.feels_like = payload.feels_like;
-      state.currentWeather.wind = payload.wind_speed;
-      state.currentWeather.wind_gust = payload.wind_gust || 0;
-      state.currentWeather.wind_deg = payload.wind_deg;
-      state.currentWeather.humidity = payload.humidity;
-      state.currentWeather.pressure = payload.pressure;
+    SET_LOADING(state, payload) {
+      state.loading = payload;
     },
 
-    SET_WEATHER_DAILY(state, payload) {
-      const dayTemp = payload?.temp?.day;
-      const nightTemp = payload?.temp?.night;
-
-      state.weatherToday.temperature = (dayTemp + nightTemp) / 2;
-
-      state.weatherToday.description = payload?.weather[0]?.description;
-
-      const dayFeel = payload?.feels_like?.day;
-      const nightFeel = payload?.feels_like?.night;
-
-      state.weatherToday.feels_like = (dayFeel + nightFeel) / 2;
-      state.weatherToday.wind = payload?.wind_speed;
-      state.weatherToday.wind_gust = payload?.wind_gust || 0;
-      state.weatherToday.wind_deg = payload?.wind_deg;
-      state.weatherToday.humidity = payload?.humidity;
-      state.weatherToday.pressure = payload?.pressure;
+    SET_WEATHER_DATA(state, payload) {
+      state.weatherData = payload;
     },
 
     SET_WEATHER_WEEK(state, payload) {
-      state.weatherWeek = payload.map((date) => {
-        return {
-          ...date,
-          dt: moment.unix(date.dt).toISOString(),
-        };
-      });
+      state.weatherWeek = payload;
     },
 
     SET_CURRENT_SELECTION(state, payload) {
@@ -129,19 +86,26 @@ export default createStore({
     SET_SELECTED_DATE(state, payload) {
       state.selectedDate = payload;
     },
+
+    SET_INITIAL_DATE(state) {
+      state.selectedDate = null;
+      state.currentSelection = "Now";
+    },
   },
 
   actions: {
     fetchWeatherDetails({ commit }) {
+      commit("SET_LOADING", true);
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            "https://api.openweathermap.org/data/2.5/onecall?lat=40.58725980318928&lon=22.948223362612612&exclude=hourly,minutely&appid=11b0499bd13ab56063de7565a440eb97&units=metric"
-          )
+          .get("/response.json")
           .then((res) => {
-            commit("SET_WEATHER_CURRENT", res.data.current);
-            commit("SET_WEATHER_DAILY", res.data.daily[0]);
-            commit("SET_WEATHER_WEEK", res.data.daily);
+            commit(
+              "SET_WEATHER_DATA",
+              transformCurrentWeather(res.data.current)
+            );
+            commit("SET_WEATHER_WEEK", transformDailyWeather(res.data.daily));
+            commit("SET_LOADING", false);
             resolve(res);
           })
           .catch((e) => {

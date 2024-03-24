@@ -58,7 +58,7 @@ export default {
     },
 
     clearDate() {
-      this.$store.commit("");
+      this.$store.commit("SET_INITIAL_DATE");
     },
   },
 };
