@@ -15,16 +15,20 @@
       />
       <DatePicker />
     </div>
-    <div class="mt-10 flex justify-between border-b pb-10">
+    <div class="flex justify-between items-center border-b pb-6 mt-6">
       <div class="flex flex-col gap-2">
-        <p class="text-5xl font-xs">
+        <p class="text-5xl font-bold">
           {{ weatherData[0].value }}
-          <span class="font-light text-4xl">{{ weatherData[0].unit }}</span>
+          <span class="font-light text-5xl">{{ weatherData[0].unit }}</span>
         </p>
         <p class="text-sm text-gray-500">{{ weatherData[0].description }}</p>
       </div>
-      <div class="">
-        <img src="https://openweathermap.org/img/w/03d.png" alt="" />
+      <div class="w-24 h-24">
+        <img
+          :src="`https://openweathermap.org/img/w/${weatherData[0].icon}.png`"
+          class="w-full h-full"
+          alt="Weather Icon"
+        />
       </div>
     </div>
 
