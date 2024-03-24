@@ -113,7 +113,9 @@ export default createStore({
       commit("SET_LOADING", true);
       return new Promise((resolve, reject) => {
         axios
-          .get("/response.json")
+          .get(
+            "https://api.openweathermap.org/data/2.5/onecall?lat=40.58725980318928&lon=22.948223362612612&exclude=hourly,minutely&appid=11b0499bd13ab56063de7565a440eb97&units=metric"
+          )
           .then((res) => {
             commit(
               "SET_WEATHER_DATA",
