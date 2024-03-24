@@ -31,7 +31,7 @@ export function transformCurrentWeather(data) {
     {
       value: roundNumber(data.temp),
       unit: "°C",
-      description: data.weather[0].description,
+      description: `${data.weather[0].main} - ${data.weather[0].description}`,
       icon: data.weather[0].icon,
     },
     {
@@ -68,7 +68,7 @@ export function transformDailyWeather(data) {
       {
         value: roundNumber((day.temp.day + day.temp.night) / 2),
         unit: "°C",
-        description: day.weather[0].description,
+        description: `${day.weather[0].main} - ${day.weather[0].description}`,
         icon: day.weather[0].icon,
       },
       {
