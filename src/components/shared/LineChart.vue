@@ -1,5 +1,6 @@
 <template>
-  <div class="">
+  <div v-if="loading">Loading weather data...</div>
+  <div v-else class="min-w-full">
     <apexchart type="line" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
@@ -19,33 +20,25 @@ export default {
     ...mapGetters({
       chartTemperature: "getTemperaturesForChart",
       chartDates: "getDatesForChart",
+      loading: "getLoading",
     }),
 
     chartOptions() {
       return {
-        chart: { id: "weather-chart" },
+        chart: { id: "weather-chart", width: "100%", height: "auto" },
         responsive: [
           {
-            breakpoint: 760,
+            breakpoint: 640,
             options: {
               chart: {
                 type: "bar",
-              },
-              plotOptions: {
-                bar: {
-                  horizontal: true,
+                toolbar: {
+                  show: false,
                 },
               },
-              yaxis: {
-                categories: this.chartDates,
-              },
-              xaxis: {
-                labels: {
-                  formatter: (value) => {
-                    return `${value}°C`;
-                  },
-                },
-              },
+            },
+            dataLabels: {
+              enabled: false,
             },
           },
         ],
@@ -73,19 +66,19 @@ export default {
             fontSize: "15px",
           },
         },
-        markers: {
-          size: 7,
-        },
         dataLabels: {
           enabled: true,
-          formatter: function (value) {
+          formatter: (value) => {
             return `${value}°C`;
           },
-          offsetX: 2,
-          offsetY: -10,
+          offsetX: 0,
+          offsetY: -8,
           style: {
             fontSize: "13px",
-            colors: [""],
+            colors: ["373D3F"],
+          },
+          background: {
+            enabled: false,
           },
         },
       };

@@ -1,5 +1,4 @@
 <template>
-  <!-- Display loading message or spinner when data is being fetched -->
   <div v-if="loading">Loading weather data...</div>
   <div v-else>
     <div class="mb-5 flex gap-1 sm:gap-2">
@@ -38,9 +37,9 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
       <div
-        class="border rounded-xl py-5 px-3"
+        class="border rounded-xl py-5 px-3 flex flex-col sm:items-start justify-center items-center"
         v-for="(item, index) in weatherData.slice(1)"
         :key="index"
       >
