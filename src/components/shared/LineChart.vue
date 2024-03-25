@@ -1,11 +1,12 @@
 <template>
-  <div v-if="loading">Loading weather data...</div>
+  <Loader v-if="loading" :text="'Loading Chart Data'" />
   <div v-else class="min-w-full">
     <apexchart type="line" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
 <script>
+import Loader from "./Loader.vue";
 import { mapGetters } from "vuex";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -14,6 +15,7 @@ export default {
 
   components: {
     apexchart: VueApexCharts,
+    Loader,
   },
 
   computed: {

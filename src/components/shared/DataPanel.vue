@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading">Loading weather data...</div>
+  <Loader v-if="loading" :text="'Loading Panel Data'" />
   <div v-else>
     <div class="mb-5 flex gap-1 sm:gap-2">
       <ButtonBase
@@ -62,6 +62,7 @@
 import { mapGetters } from "vuex";
 import ButtonBase from "./ButtonBase.vue";
 import DatePicker from "./DatePicker.vue";
+import Loader from "./Loader.vue";
 
 export default {
   name: "DataPanel",
@@ -69,6 +70,7 @@ export default {
   components: {
     ButtonBase,
     DatePicker,
+    Loader,
   },
 
   computed: {
