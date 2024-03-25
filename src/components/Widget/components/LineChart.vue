@@ -27,7 +27,11 @@ export default {
 
     chartOptions() {
       return {
-        chart: { id: "weather-chart", width: "100%", height: "100%" },
+        chart: {
+          id: "weather-chart",
+          width: "100%",
+          height: "100%",
+        },
         responsive: [
           {
             breakpoint: 640,
@@ -63,6 +67,11 @@ export default {
                     fontSize: "8px",
                   },
                 },
+                labels: {
+                  formatter: (value) => {
+                    return `${value}°C`;
+                  },
+                },
               },
             },
           },
@@ -96,8 +105,8 @@ export default {
           formatter: (value) => {
             return `${value}°C`;
           },
-          offsetX: -3,
-          offsetY: -7,
+          offsetX: 0,
+          offsetY: -6,
           style: {
             fontSize: "13px",
             colors: ["373D3F"],
