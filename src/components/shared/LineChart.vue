@@ -26,7 +26,7 @@ export default {
         chart: { id: "weather-chart" },
         responsive: [
           {
-            breakpoint: 1000,
+            breakpoint: 760,
             options: {
               chart: {
                 type: "bar",
@@ -36,7 +36,16 @@ export default {
                   horizontal: true,
                 },
               },
-              yaxis: {},
+              yaxis: {
+                categories: this.chartDates,
+              },
+              xaxis: {
+                labels: {
+                  formatter: (value) => {
+                    return `${value}°C`;
+                  },
+                },
+              },
             },
           },
         ],
