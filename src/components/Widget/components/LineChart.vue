@@ -73,8 +73,8 @@ export default {
           formatter: (value) => {
             return `${value}°C`;
           },
-          offsetX: 0,
-          offsetY: -8,
+          offsetX: -3,
+          offsetY: -7,
           style: {
             fontSize: "13px",
             colors: ["373D3F"],

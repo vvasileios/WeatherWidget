@@ -67,7 +67,10 @@ export function transformDailyWeather(data) {
 
   return sevenDaysWeek.map((day) => {
     return [
-      { dt: moment.unix(day.dt).toISOString() },
+      {
+        dt: moment.unix(day.dt).toISOString(),
+        maxTemp: roundNumber(day.temp.max),
+      },
       {
         value: roundNumber((day.temp.day + day.temp.night) / 2),
         unit: "°C",

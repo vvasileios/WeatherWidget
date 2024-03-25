@@ -55,7 +55,7 @@ export default createStore({
 
     getTemperaturesForChart: (state) => {
       return state.weatherWeek.map((day) => {
-        return day[1].value;
+        return day[0].maxTemp;
       });
     },
 
