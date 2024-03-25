@@ -27,20 +27,43 @@ export default {
 
     chartOptions() {
       return {
-        chart: { id: "weather-chart", width: "100%", height: "auto" },
+        chart: { id: "weather-chart", width: "100%", height: "100%" },
         responsive: [
           {
             breakpoint: 640,
             options: {
               chart: {
                 type: "bar",
+                width: "100%",
+                height: "100%",
                 toolbar: {
                   show: false,
                 },
               },
-            },
-            dataLabels: {
-              enabled: false,
+              dataLabels: {
+                enabled: true,
+                offsetX: 1,
+                offsetY: -20,
+                style: {
+                  fontSize: "8px",
+                },
+              },
+              title: {
+                text: "Weekly Variation",
+                align: "center",
+                margin: 5,
+                style: {
+                  fontSize: "10px",
+                },
+              },
+              yaxis: {
+                title: {
+                  text: "Temperature",
+                  style: {
+                    fontSize: "8px",
+                  },
+                },
+              },
             },
           },
         ],
@@ -88,7 +111,11 @@ export default {
 
     series() {
       return [
-        { name: "Temperature", data: this.chartTemperature, color: "#22C55E" },
+        {
+          name: "Temperature",
+          data: this.chartTemperature,
+          color: "#22C55E",
+        },
       ];
     },
   },
