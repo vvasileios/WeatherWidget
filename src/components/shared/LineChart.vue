@@ -76,6 +76,18 @@ export default {
         markers: {
           size: 7,
         },
+        dataLabels: {
+          enabled: true,
+          formatter: function (value) {
+            return `${value}°C`;
+          },
+          offsetX: 2,
+          offsetY: -10,
+          style: {
+            fontSize: "13px",
+            colors: [""],
+          },
+        },
       };
     },
 
