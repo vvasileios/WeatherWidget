@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import ContentBox from "./shared/ContentBox.vue";
-import DataPanel from "./shared/DataPanel.vue";
-import LineChart from "./shared/LineChart.vue";
+import ContentBox from "@shared/ContentBox.vue";
+import DataPanel from "./components/DataPanel.vue";
+import LineChart from "./components/LineChart.vue";
 
 export default {
   name: "WeatherWidget",

@@ -60,9 +60,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ButtonBase from "./ButtonBase.vue";
+import ButtonBase from "@shared/ButtonBase.vue";
+import Loader from "@shared/Loader.vue";
 import DatePicker from "./DatePicker.vue";
-import Loader from "./Loader.vue";
 
 export default {
   name: "DataPanel",

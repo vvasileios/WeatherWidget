@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Loader from "./Loader.vue";
+import Loader from "@shared/Loader.vue";
 import { mapGetters } from "vuex";
 import VueApexCharts from "vue3-apexcharts";
 
