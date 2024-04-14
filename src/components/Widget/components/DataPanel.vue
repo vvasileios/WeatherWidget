@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="loading" :text="'Loading Panel Data'" />
-  <div v-else>
+  <div v-else class="mb-20">
     <div class="mb-5 flex gap-1 sm:gap-2">
       <ButtonBase
         :is-Active="currentSelection === 'Now' && !selectedDate"

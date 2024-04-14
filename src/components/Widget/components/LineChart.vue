@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="loading" :text="'Loading Chart Data'" />
-  <div v-else class="min-w-full">
+  <div v-else class="min-w-full mt-20">
     <apexchart type="line" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
@@ -105,7 +105,7 @@ export default {
           formatter: (value) => {
             return `${value}°C`;
           },
-          offsetX: 0,
+          offsetX: 6,
           offsetY: -6,
           style: {
             fontSize: "13px",
