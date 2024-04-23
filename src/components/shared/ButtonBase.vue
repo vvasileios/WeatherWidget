@@ -1,3 +1,26 @@
+<script setup>
+const props = defineProps({
+  text: {
+    type: String,
+    default: "",
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
+  isDateSelected: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(["select"]);
+
+const isSelected = () => {
+  emit("select", props.text);
+};
+</script>
+
 <template>
   <button
     :class="[
@@ -14,32 +37,3 @@
     {{ text }}
   </button>
 </template>
-
-<script>
-export default {
-  name: "ButtonBase",
-
-  props: {
-    text: {
-      type: String,
-      default: "",
-    },
-
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
-
-    isDateSelected: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  methods: {
-    isSelected() {
-      this.$emit("select", this.text);
-    },
-  },
-};
-</script>

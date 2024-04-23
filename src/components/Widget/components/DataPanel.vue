@@ -1,3 +1,27 @@
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import ButtonBase from "@shared/ButtonBase.vue";
+import Loader from "@shared/Loader.vue";
+import DatePicker from "./DatePicker.vue";
+
+const store = useStore();
+const weatherData = computed(() => store.getters.getWeatherData);
+const currentSelection = computed(() => store.getters.currentSelection);
+const selectedDate = computed(() => store.getters.selectedDate);
+const loading = computed(() => store.getters.getLoading);
+
+const handleSelection = (selection) => {
+  dispatch("setCurrentSelection", selection);
+};
+
+const changeUnitStyle = (item) => {
+  return item === "Feels Like" || item === "Wind Deg"
+    ? "text-sm sm:text-xl"
+    : "text-sm";
+};
+</script>
+
 <template>
   <Loader v-if="loading" :text="'Loading Panel Data'" />
   <div v-else class="mb-20">
@@ -57,43 +81,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { mapGetters } from "vuex";
-import ButtonBase from "@shared/ButtonBase.vue";
-import Loader from "@shared/Loader.vue";
-import DatePicker from "./DatePicker.vue";
-
-export default {
-  name: "DataPanel",
-
-  components: {
-    ButtonBase,
-    DatePicker,
-    Loader,
-  },
-
-  computed: {
-    ...mapGetters({
-      weatherData: "getWeatherData",
-      currentSelection: "getCurrentSelection",
-      selectedDate: "getSelectedDate",
-      loading: "getLoading",
-    }),
-  },
-
-  methods: {
-    handleSelection(selection) {
-      this.$store.dispatch("setCurrentSelection", selection);
-    },
-
-    changeUnitStyle(item) {
-      if (item === "Feels Like" || item === "Wind Deg") {
-        return "text-sm sm:text-xl";
-      } else {
-        return "text-sm";
-      }
-    },
-  },
-};
-</script>
